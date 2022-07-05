@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Capture</string>
+    <string name="first_name">Firstname</string>
+    <string name="last_name">Lastname</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="favorites">Favorites</string>
+    <string name="logout">Logout</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout_title">Confirm logout</string>
+    <string name="logout_message">Are you sure you want to logout?</string>
+    <string name="next">Next</string>
+    <string name="place_name">Place Name</string>
+    <string name="description">Description</string>
+    <string name="error">Error</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="add_places">Add Places</string>
+    <string name="search_places">Search Places</string>
+    <string name="upload_places">Upload Places</string>
+    <string name="capture">Capture</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="home">Home</string>
+    <string name="required">Required*</string>
+    <string name="image_is_required">Image is required*</string>
+    <string name="image_mandatory">Image is mandatory</string>
+    <string name="name_mandatory">Place Name is mandatory</string>
+    <string name="description_mandatory">Description is mandatory</string>
+    <string name="submit_title">Submit place</string>
+    <string name="submit_message">Are you sure you want to submit this place?</string>
+    <string name="upload_title">Submit places</string>
+    <string name="upload_message">Are you sure you want to submit this places?</string>
+    <string name="ok">Ok</string>
+    <string name="success">Success</string>
+    <string name="add_success_message">Place is been added successfully</string>
+    <string name="add_success_message_no_connection">Place is been saved successfully</string>
+    <string name="upload_success_message">Places is been added successfully.</string>
+    <string name="add_error">Place not successfully added. Please try again</string>
+    <string name="upload_error">Places not successfully added. Please try again</string>
+    <string name="location_error_title">Location error</string>
+    <string name="location_error_message">Marker location must not be beyond the circle</string>
+    <string name="empty_saved">No saved places.</string>
+    <string name="places">Places</string>
+    <string name="saved_places">Saved Places</string>
+    <string name="firstname_mandatory">Firstname is mandatory</string>
+    <string name="lastname_mandatory">Lastname is mandatory</string>
+    <string name="username_mandatory">Username is mandatory</string>
+    <string name="password_mandatory">Password is mandatory</string>
+
+
+</resources>
