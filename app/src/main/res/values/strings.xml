@@ -18,7 +18,7 @@
     <string name="error">Error</string>
     <string name="please_wait">Please wait...</string>
     <string name="add_places">Add Places</string>
-    <string name="search_places">Search Places</string>
+    <string name="search_places">View Places</string>
     <string name="upload_places">Upload Places</string>
     <string name="capture">Capture</string>
     <string name="confirm_location">Confirm Location</string>
@@ -48,6 +48,7 @@
     <string name="lastname_mandatory">Lastname is mandatory</string>
     <string name="username_mandatory">Username is mandatory</string>
     <string name="password_mandatory">Password is mandatory</string>
+    <string name="locate">Locate</string>
 
 
 </resources>

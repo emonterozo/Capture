@@ -1,31 +1,29 @@
 package com.eqmonterozo.capture;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class PlaceDetailsActivity extends AppCompatActivity {
     RecyclerView recViewImages;
     ImageAdapter imageAdapter;
 
     TextView txtPlaceName, txtDescription, txtAddress, txtAddedBy;
+    Button btnLocate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +35,7 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.txtDescription);
         txtAddress = findViewById(R.id.txtAddress);
         txtAddedBy = findViewById(R.id.txtAddedBy);
+        btnLocate = findViewById(R.id.btnLocate);
 
         Date date = null;
         try {
@@ -48,7 +47,7 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         txtPlaceName.setText(getIntent().getStringExtra("placeName"));
         txtDescription.setText(getIntent().getStringExtra("description"));
         txtAddress.setText(getIntent().getStringExtra("address"));
-        txtAddedBy.setText(getIntent().getStringExtra("addedBy") + ", " + (new SimpleDateFormat("yyyy-MM-dd hh:mm aa")).format(date));
+        txtAddedBy.setText("Added by: " + getIntent().getStringExtra("addedBy") + ", " + (new SimpleDateFormat("yyyy-MM-dd hh:mm aa")).format(date));
 
 
         JsonArray outputJsonArray = JsonParser.parseString(getIntent().getStringExtra("images")).getAsJsonArray();
@@ -56,5 +55,13 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         recViewImages.setAdapter(imageAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recViewImages.setLayoutManager(linearLayoutManager);
+
+        btnLocate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?q="+getIntent().getStringExtra("latitude") +"," + getIntent().getStringExtra("longitude")));
+                startActivity(intent);
+            }
+        });
     }
 }

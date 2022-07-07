@@ -1,7 +1,7 @@
 package com.eqmonterozo.capture;
 
 public class Constant {
-    public static String SERVER_URL = "https://a689-120-29-77-12.ngrok.io/";
+    public static String SERVER_URL = "https://capture-backend.herokuapp.com/";
     //API
     public static String API_LOGIN = "login";
     public static String API_REGISTER = "register";

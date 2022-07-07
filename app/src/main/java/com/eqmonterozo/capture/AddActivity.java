@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -76,7 +75,16 @@ import java.util.UUID;
 
 public class AddActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {
+            android.Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
     private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int FINE_REQUEST_CODE = 2;
+    private static final int COARSE_REQUEST_CODE = 3;
     private int image = 0;
     private ImageView imgFirst, imgSecond, imgThird;
     private ViewFlipper flipAdd;
@@ -136,8 +144,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
 
         }
 
-        getLocation();
-
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -145,16 +151,12 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         edtPlaceName.addTextChangedListener(new InputTextWatcher(edtPlaceName, inputPlaceName));
         edtPlaceDescription.addTextChangedListener(new InputTextWatcher(edtPlaceDescription, inputPlaceDescription));
 
-
-
-        if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        } else {
+            getLocation();
         }
 
-        if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404);
-            ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 404);
-        }
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +194,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
                             User obj = gson.fromJson(json, User.class);
 
                             List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                            boolean isSuccess = databaseHelper.addPlace(edtPlaceName.getText().toString(),edtPlaceDescription.getText().toString(), images, latLng.latitude, latLng.longitude, addressList.get(0).getAddressLine(0), obj.getId());
+                            boolean isSuccess = databaseHelper.addPlace(edtPlaceName.getText().toString(), edtPlaceDescription.getText().toString(), images, latLng.latitude, latLng.longitude, addressList.get(0).getAddressLine(0), obj.getId());
                             if (isSuccess) {
                                 successDialog(getResources().getString(R.string.success), getResources().getString(R.string.add_success_message_no_connection));
                             }
@@ -341,6 +343,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -407,6 +410,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == CAMERA_REQUEST_CODE) {
             Bundle extras = data.getExtras();
             Bitmap bitmap = (Bitmap) extras.get("data");
@@ -422,7 +426,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
                 FileOutputStream outputStream = new FileOutputStream(String.valueOf(imageFile));
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                 outputStream.close();
-                images.add("\"" + imageFile+ "\"");
+                images.add("\"" + imageFile + "\"");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -462,6 +466,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void getLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -511,5 +516,17 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             })
             .show();
+    }
+
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
